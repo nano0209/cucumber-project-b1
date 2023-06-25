@@ -1,9 +1,7 @@
 package io.loop.utilities.utilities;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import io.cucumber.java.Scenario;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -77,12 +75,14 @@ public class BrowserUtils {
         WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(10));
         wait.until(ExpectedConditions.elementToBeClickable(element)).click();
     }
+
     /**
      * method for hover over
+     *
      * @param element
      * @author Naima
      */
-    public static void hoverOverElement(WebElement element){
+    public static void hoverOverElement(WebElement element) {
         Actions actions = new Actions(Driver.getDriver());
         actions.moveToElement(element).perform();
 
@@ -90,46 +90,50 @@ public class BrowserUtils {
 
     /**
      * method scroll to element
+     *
      * @param element
      */
-    public static void scrollToElement(WebElement element){
-        ((JavascriptExecutor) Driver.getDriver()).executeScript("arguments[0].scrollIntoView(true);",element);
+    public static void scrollToElement(WebElement element) {
+        ((JavascriptExecutor) Driver.getDriver()).executeScript("arguments[0].scrollIntoView(true);", element);
 
     }
 
     /**
      * method which scroll to element and click
+     *
      * @param element
      */
-    public static void scrollAndClick(WebElement element){
-        ((JavascriptExecutor) Driver.getDriver()).executeScript("arguments[0].scrollIntoView(true);",element);
-        ((JavascriptExecutor) Driver.getDriver()).executeScript("arguments[0].click",element);
+    public static void scrollAndClick(WebElement element) {
+        ((JavascriptExecutor) Driver.getDriver()).executeScript("arguments[0].scrollIntoView(true);", element);
+        ((JavascriptExecutor) Driver.getDriver()).executeScript("arguments[0].click", element);
 
     }
 
     /**
      * method which scoll to element and click js
+     *
      * @param element
      */
-public static void doubleClick(WebElement element){
-    new Actions(Driver.getDriver()).doubleClick().perform();
-}
+    public static void doubleClick(WebElement element) {
+        new Actions(Driver.getDriver()).doubleClick().perform();
+    }
 
-/**
- * method to be providing element to ve visible
- * @param element
- * @param timeToWaitSec
- * return element
- * @author Naima
- */
-public static WebElement waitForVisibility(WebElement element, int timeToWaitSec){
-    WebDriverWait wait = new WebDriverWait (Driver.getDriver(), Duration.ofSeconds(timeToWaitSec));
-    return wait.until(ExpectedConditions.visibilityOf(element));
+    /**
+     * method to be providing element to ve visible
+     *
+     * @param element
+     * @param timeToWaitSec return element
+     * @author Naima
+     */
+    public static WebElement waitForVisibility(WebElement element, int timeToWaitSec) {
+        WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(timeToWaitSec));
+        return wait.until(ExpectedConditions.visibilityOf(element));
 
     }
 
     /**
      * Waits for provided element to be clickable
+     *
      * @param element
      * @param timeout
      * @return
@@ -140,13 +144,31 @@ public static WebElement waitForVisibility(WebElement element, int timeToWaitSec
     }
 
     /**
-
-     Waits for the provided element to be invisible on the page
-     @param element
-     @param timeToWaitInSec*
-     @author nsh
+     * Waits for the provided element to be invisible on the page
+     *
+     * @param element
+     * @param timeToWaitInSec*
+     * @author nsh
      */
     public static void waitForInVisibility(WebElement element, int timeToWaitInSec) {
         WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(timeToWaitInSec));
-        wait.until(ExpectedConditions.invisibilityOf(element));}
+        wait.until(ExpectedConditions.invisibilityOf(element));
+    }
+
+
+    public static Scenario myScenario;
+
+    public static void takeScreenshot(){
+        try {
+            myScenario.log("Current url is: " + Driver.getDriver().getCurrentUrl());
+            final byte[] screenshot = ((TakesScreenshot)Driver.getDriver()).getScreenshotAs(OutputType.BYTES);
+            myScenario.attach(screenshot, "image/png", myScenario.getName());
+        } catch (WebDriverException wbd){
+            wbd.getMessage();
+        } catch (ClassCastException cce){
+            cce.getMessage();
+        }
+    }
+
+
 }
