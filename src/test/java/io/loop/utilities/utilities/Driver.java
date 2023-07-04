@@ -21,7 +21,10 @@ public class Driver {
     Static - run before everything also use in static method
      */
 
-    private static WebDriver driver;
+   // private static WebDriver driver;
+    //implemented threadLocal to achieve multiThread local
+    private static InheritableThreadLocal <WebDriver> driverPool = new InheritableThreadLocal<>();
+
 
     /*
     reusable method that will return same driver instance everytime when called
@@ -33,22 +36,24 @@ public class Driver {
      * @author Naima
      */
     public static WebDriver getDriver(){
-        if (driver==null){
+        if (driverPool.get()==null){
             String browserType = ConfigurationReader.getProperty("browser");
             switch (browserType.toLowerCase()){
                 case "chrome":
                     WebDriverManager.chromedriver().setup();
-                    driver = new ChromeDriver();
+                    driverPool.set(new ChromeDriver());
+                    driverPool.get().manage().window().maximize();
+                    driverPool.get().manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
                     break;
                 case "firefox":
                     WebDriverManager.firefoxdriver().setup();
-                    driver = new FirefoxDriver();
+                    driverPool.set(new FirefoxDriver());
                     break;
             }
-            driver.manage().window().maximize();
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+            driverPool.get().manage().window().maximize();
+            driverPool.get().manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         }
-        return driver;
+        return driverPool.get();
     }
 
     /**
@@ -58,9 +63,9 @@ public class Driver {
 
     public static void closeDriver(){
 
-        if (driver !=null){
-            driver.quit();
-            driver = null;
+        if (driverPool.get() !=null){
+            driverPool.get().quit();
+            driverPool.remove();
         }
 
 

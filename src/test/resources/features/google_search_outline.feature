@@ -1,5 +1,5 @@
 Feature: Scenario: outline practice
-  @nm
+  @wip
   Scenario Outline: Google search cities
     Given user is on Google search page
     When user searches for the "<country>"
@@ -10,5 +10,5 @@ Feature: Scenario: outline practice
       | Ukraine     | Kyiv       |
       | Afghanistan | Kabul      |
       | Turkey      | Ankara     |
-      | USA         | Washington |
+      | USA         | Washington, D.C. |
 
