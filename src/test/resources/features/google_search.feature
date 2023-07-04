@@ -5,7 +5,7 @@ Feature: Google search functionality Title Validation
   Scenario: Search functionality result title validation
     Given user is on Google search page
     When user types Loop Academy in the google search box and clicks enter
-    Then user should see Loop Academy - Google Search in the google title  I
+    Then user should see Loop Academy - Google Search in the google title
 
   Scenario: Search functionality result title verification
     Given user is on Google search page

@@ -1,15 +1,19 @@
 package io.loop.utilities.utilities;
 
 import io.cucumber.java.Scenario;
+import org.junit.Assert;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import static org.testng.Assert.assertTrue;
+
 
 public class BrowserUtils {
     /**
@@ -33,7 +37,7 @@ public class BrowserUtils {
             }
 
         }
-        assertTrue(driver.getTitle().toLowerCase().contains(expectedTitle));
+        Assert.assertTrue(driver.getTitle().toLowerCase().contains(expectedTitle));
 
     }
 
@@ -59,7 +63,7 @@ public class BrowserUtils {
      * @author Naima
      */
     public static void validateTitle(WebDriver driver, String expectedTitle) {
-        assertTrue(driver.getTitle().contains(expectedTitle));
+        Assert.assertTrue(driver.getTitle().contains(expectedTitle));
 
     }
 
@@ -155,20 +159,64 @@ public class BrowserUtils {
         wait.until(ExpectedConditions.invisibilityOf(element));
     }
 
+    /**
+     * Clicks on an element using JavaScript
+     *
+     * @param element
+     * @author nsh
+     */
+    public static void clickWithJS(WebElement element) {
+        ((JavascriptExecutor) Driver.getDriver()).executeScript("arguments[0].scrollIntoView(true);", element);
+        ((JavascriptExecutor) Driver.getDriver()).executeScript("arguments[0].click();", element);
+    }
+
 
     public static Scenario myScenario;
 
-    public static void takeScreenshot(){
+    public static void takeScreenshot() {
         try {
             myScenario.log("Current url is: " + Driver.getDriver().getCurrentUrl());
-            final byte[] screenshot = ((TakesScreenshot)Driver.getDriver()).getScreenshotAs(OutputType.BYTES);
+            final byte[] screenshot = ((TakesScreenshot) Driver.getDriver()).getScreenshotAs(OutputType.BYTES);
             myScenario.attach(screenshot, "image/png", myScenario.getName());
-        } catch (WebDriverException wbd){
+        } catch (WebDriverException wbd) {
             wbd.getMessage();
-        } catch (ClassCastException cce){
+        } catch (ClassCastException cce) {
             cce.getMessage();
         }
     }
 
+    public static void justWait(int seconds) {
+        try {
+            Thread.sleep(seconds * 1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
+
+    /**
+     * @param elements
+     * @return
+     */
+
+    public static List<String> getElementText(List<WebElement> elements) {
+        List<String> elementsText = new ArrayList<>();
+        for (WebElement element : elements) {
+            elementsText.add(element.getText());
+        }
+        return elementsText;
+
+    }
+
+    public static List<String> getElementsTextWithStream (List<WebElement> elements){
+        return elements.stream()
+                .map(x->x.getText())
+                .collect(Collectors.toList());
+    }
+
+    public static List<String> getElementsTextWithStream2 (List<WebElement> elements){
+        return elements.stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
+    }
 }

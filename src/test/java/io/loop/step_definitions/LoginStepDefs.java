@@ -11,6 +11,8 @@ import io.loop.utilities.utilities.ConfigurationReader;
 import io.loop.utilities.utilities.DocuportConstants;
 import io.loop.utilities.utilities.Driver;
 
+import java.util.Map;
+
 public class LoginStepDefs {
 
     LoginPage loginPage = new LoginPage();
@@ -22,7 +24,7 @@ public class LoginStepDefs {
     public void user_enters_username_for_client() throws InterruptedException {
         Thread.sleep(3000);
         BrowserUtils.waitForClickable(loginPage.loginButton,10);
-        loginPage.loginInput.sendKeys(DocuportConstants.USERNAME_CLIENT);
+        loginPage.usernameInput.sendKeys(DocuportConstants.USERNAME_CLIENT);
 
     }
     @When("user enters password for client")
@@ -45,7 +47,7 @@ public class LoginStepDefs {
 
     @When("user enters username for employee")
     public void user_enters_username_for_employee() {
-        loginPage.loginInput.sendKeys(DocuportConstants.USERNAME_EMPLOYEE);
+        loginPage.usernameInput.sendKeys(DocuportConstants.USERNAME_EMPLOYEE);
 
     }
     @When("user enters password for employee")
@@ -61,7 +63,7 @@ public class LoginStepDefs {
 
     @When("user enters username for advisor")
     public void user_enters_username_for_advisor() {
-        loginPage.loginInput.sendKeys(DocuportConstants.USERNAME_ADVISOR);
+        loginPage.usernameInput.sendKeys(DocuportConstants.USERNAME_ADVISOR);
 
     }
     @When("user enters password for advisor")
@@ -77,7 +79,7 @@ public class LoginStepDefs {
 
     @When("user enters username for supervisor")
     public void user_enters_username_for_supervisor() {
-        loginPage.loginInput.sendKeys(DocuportConstants.USERNAME_SUPERVISOR);
+        loginPage.usernameInput.sendKeys(DocuportConstants.USERNAME_SUPERVISOR);
 
     }
     @When("user enters password for supervisor")
@@ -90,6 +92,20 @@ public class LoginStepDefs {
         loginPage.homePage.isDisplayed();
 
     }
+
+    @When("user enters credentials")
+    public void user_enters_credentials(Map<String, String> credentials) {
+//        for (Map.Entry<String, String> entry : credentials.entrySet()){
+//            String key = entry.getKey();
+//            System.out.println("key = " + key);
+//            String value = entry.getValue();
+//            System.out.println("value = " +value);
+//            System.out.println("===================");
+//        }
+        loginPage.loginDocuport(credentials.get("username"), credentials.get("password"));
+
+    }
+
 
 
 
