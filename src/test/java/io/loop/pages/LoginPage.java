@@ -23,6 +23,10 @@ public class LoginPage {
     @FindBy(xpath = "//span[.='Home']")
     public WebElement homePage;
 
+    @FindBy(xpath = "//span[.=' Continue ']")
+    public WebElement continueButton;
+
+
 
     /**
      * login to docuport

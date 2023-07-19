@@ -1,5 +1,5 @@
 Feature: Scenario: outline practice
-  @wip
+
   Scenario Outline: Google search cities
     Given user is on Google search page
     When user searches for the "<country>"
